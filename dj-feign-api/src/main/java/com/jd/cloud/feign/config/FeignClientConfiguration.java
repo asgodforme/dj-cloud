@@ -1,4 +1,4 @@
-package com.dj.cloud.portal.config;
+package com.jd.cloud.feign.config;
 
 import feign.Logger;
 import org.springframework.context.annotation.Bean;

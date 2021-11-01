@@ -17,6 +17,9 @@
     <modules>
         <module>dj-portal</module>
         <module>dj-user</module>
+        <module>dj-test</module>
+        <module>dj-feign-api</module>
+        <module>dj-gateway</module>
     </modules>
 
     <properties>

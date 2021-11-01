@@ -1,6 +1,6 @@
-package com.dj.cloud.portal.client;
+package com.jd.cloud.feign.client;
 
-import com.dj.cloud.portal.config.FeignClientConfiguration;
+import com.jd.cloud.feign.config.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 

@@ -1,7 +1,7 @@
 package com.dj.cloud.portal.web;
 
-import com.dj.cloud.portal.client.TimeClient;
 import com.dj.cloud.portal.config.PatternProperties;
+import com.jd.cloud.feign.client.TimeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;

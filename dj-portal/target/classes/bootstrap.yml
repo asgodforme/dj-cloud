@@ -16,12 +16,17 @@ spring:
 server:
   port: 8081
 
-# feign全局日志配置（需要springboot日志等级设置为debug）
-#feign:
+
+feign:
 #  client:
 #    config:
 #      default:
-#        logger-level: FULL
+#        logger-level: FULL # feign全局日志配置（需要springboot日志等级设置为debug）
+  httpclient:
+    enable: true #开启feign对httpclient的支持
+    max-connection: 200 #最大连接数
+    max-connection-per-route: 50 #每个路径的最大连接数
+
 
 logging:
   level:

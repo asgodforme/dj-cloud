@@ -20,6 +20,7 @@
         <module>dj-test</module>
         <module>dj-feign-api</module>
         <module>dj-gateway</module>
+        <module>dj-mybatis</module>
     </modules>
 
     <properties>

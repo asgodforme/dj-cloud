@@ -2,6 +2,7 @@ package com.dj.cloud.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * 网关的作用
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Zuul是基于Servlet的实现，属于阻塞式编程。而springgateway是基于spring5中的webflux,属于响应式编程的实现，具备更好的性能。吞吐量更高！
  */
 @SpringBootApplication
+@EnableDiscoveryClient
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

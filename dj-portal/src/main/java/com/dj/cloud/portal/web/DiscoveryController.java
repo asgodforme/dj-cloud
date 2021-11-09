@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 @RestController
 //@RefreshScope // 配置自动刷新
+@RequestMapping("/portal")
 public class DiscoveryController {
 
 //    @Value("${pattern.dateformat}")
@@ -25,7 +28,8 @@ public class DiscoveryController {
     private TimeClient timeClient;
 
     @GetMapping("now")
-    public String now() {
+    public String now(@RequestHeader(value = "jiangjie", required = false) String jiangjie) {
+        System.out.println(jiangjie);
 //        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(parttern));
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(patternProperties.getDateformat()));
     }

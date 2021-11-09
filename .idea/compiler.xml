@@ -11,6 +11,7 @@
         <module name="dj-gateway" />
         <module name="dj-portal" />
         <module name="dj-user" />
+        <module name="dj-mybatis" />
       </profile>
     </annotationProcessing>
   </component>
@@ -18,6 +19,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="dj-feign-api" options="-parameters" />
       <module name="dj-gateway" options="-parameters" />
+      <module name="dj-mybatis" options="-parameters" />
       <module name="dj-portal" options="-parameters" />
       <module name="dj-test" options="-parameters" />
       <module name="dj-user" options="-parameters" />

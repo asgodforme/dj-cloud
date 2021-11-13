@@ -1,0 +1,3 @@
+com\jd\cloud\feign\config\FeignClientConfiguration.class
+com\jd\cloud\feign\Application.class
+com\jd\cloud\feign\client\TimeClient.class

@@ -6,12 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="dj-test" />
-        <module name="dj-feign-api" />
-        <module name="dj-gateway" />
         <module name="dj-portal" />
         <module name="dj-user" />
         <module name="dj-mybatis" />
+        <module name="dj-object" />
+        <module name="dj-test" />
+        <module name="dj-feign-api" />
+        <module name="dj-gateway" />
       </profile>
     </annotationProcessing>
   </component>
@@ -20,6 +21,7 @@
       <module name="dj-feign-api" options="-parameters" />
       <module name="dj-gateway" options="-parameters" />
       <module name="dj-mybatis" options="-parameters" />
+      <module name="dj-object" options="-parameters" />
       <module name="dj-portal" options="-parameters" />
       <module name="dj-test" options="-parameters" />
       <module name="dj-user" options="-parameters" />

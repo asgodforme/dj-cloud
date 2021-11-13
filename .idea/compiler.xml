@@ -15,6 +15,16 @@
         <module name="dj-gateway" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dj-cloud" target="1.8" />
+      <module name="dj-feign-api" target="8" />
+      <module name="dj-gateway" target="8" />
+      <module name="dj-mybatis" target="8" />
+      <module name="dj-object" target="8" />
+      <module name="dj-portal" target="8" />
+      <module name="dj-test" target="8" />
+      <module name="dj-user" target="8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

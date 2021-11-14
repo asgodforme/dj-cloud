@@ -1,6 +1,6 @@
 spring:
   application:
-    name: djportal
+    name: dj-portal
   profiles:
     active: dev
   cloud:
@@ -10,7 +10,6 @@ spring:
         cluster-name: SZ #配置集群名称，也就是机房位置
         namespace: 590ec80f-7690-4899-8954-83f6f97fd8d6 #命名空间：相同命名空间的服务才可以访问
         ephemeral: false # 是否是临时实例.
-        register-enabled: false
       config:
         namespace: 590ec80f-7690-4899-8954-83f6f97fd8d6 #命名空间：相同命名空间的服务才可以访问
         file-extension: yaml

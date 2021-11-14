@@ -1,6 +1,11 @@
 server:
   port: 10010
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dj_portal?serverTimezone=GMT%2B8&useSSL=true
+    username: root
+    password: jiangjie1
   main:
     web-application-type: reactive
   application:
@@ -14,9 +19,9 @@ spring:
     gateway:
       routes:
         - id: dj-portal
-          uri: lb://djportal
+          uri: lb://dj-portal
           predicates:
-            - Path=/portal/**
+            - Path=/api/portal/**
           filters:
             - AddRequestHeader=jiangjie, hahahahah1111
       default-filters:

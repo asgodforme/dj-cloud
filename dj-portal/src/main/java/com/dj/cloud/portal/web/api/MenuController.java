@@ -1,5 +1,6 @@
 package com.dj.cloud.portal.web.api;
 
+import com.dj.cloud.object.vo.Result;
 import com.dj.cloud.portal.service.MenuService;
 import com.dj.cloud.portal.vo.MenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class MenuController {
     private MenuService menuService;
 
     @GetMapping("/getMenus")
-    public List<MenuVo> getMenus() {
+    public Result<List<MenuVo>> getMenus() {
         return menuService.getMenus();
     }
 }

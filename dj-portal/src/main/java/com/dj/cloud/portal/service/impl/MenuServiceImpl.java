@@ -1,5 +1,6 @@
 package com.dj.cloud.portal.service.impl;
 
+import com.dj.cloud.object.vo.Result;
 import com.dj.cloud.portal.entity.Menu;
 import com.dj.cloud.portal.repository.MenuRepository;
 import com.dj.cloud.portal.service.MenuService;
@@ -30,7 +31,7 @@ public class MenuServiceImpl implements MenuService {
     };
 
     @Override
-    public List<MenuVo> getMenus() {
+    public Result<List<MenuVo>> getMenus() {
         //  查询所有菜单
         List<Menu> menus = menuRepository.findAll();
         //  拿到父菜单
@@ -52,6 +53,6 @@ public class MenuServiceImpl implements MenuService {
                                 .filter(subMenu -> menuVo.getId() == subMenu.getParentId())
                                 .map(MENU_TO_MENUVO::apply)
                                 .collect(Collectors.toList())));
-        return mainMenus;
+        return Result.newResult(mainMenus);
     }
 }

@@ -24,5 +24,9 @@ spring:
             - Path=/api/portal/**
           filters:
             - AddRequestHeader=jiangjie, hahahahah1111
+        - id: dj-facility
+          uri: lb://dj-facility
+          predicates:
+            - Path=/api/facility/**
       default-filters:
         - AddRequestHeader=jiangjie, hahahahah2222

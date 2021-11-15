@@ -22,6 +22,7 @@
         <module>dj-gateway</module>
         <module>dj-mybatis</module>
         <module>dj-object</module>
+        <module>dj-facility</module>
     </modules>
 
     <properties>

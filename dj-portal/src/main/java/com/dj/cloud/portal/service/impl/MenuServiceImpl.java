@@ -1,6 +1,6 @@
 package com.dj.cloud.portal.service.impl;
 
-import com.dj.cloud.object.vo.Result;
+import com.dj.cloud.common.vo.Result;
 import com.dj.cloud.portal.entity.Menu;
 import com.dj.cloud.portal.repository.MenuRepository;
 import com.dj.cloud.portal.service.MenuService;
@@ -8,7 +8,6 @@ import com.dj.cloud.portal.vo.MenuVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;

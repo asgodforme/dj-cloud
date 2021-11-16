@@ -2,7 +2,8 @@ package com.dj.cloud.facility.web;
 
 import com.dj.cloud.facility.entity.SystemInfo;
 import com.dj.cloud.facility.service.SystemInfoService;
-import com.dj.cloud.object.vo.Result;
+import com.dj.cloud.common.vo.PageResponse;
+import com.dj.cloud.common.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +26,13 @@ public class SystemInfoController {
         return systemInfoService.deleteSystemInfo(systemInfo.getId());
     }
 
-    @PutMapping("/updateSystemInfo")
-    public Result<SystemInfo> updateSystemInfo(SystemInfo systemInfo) {
+    @PostMapping("/updateSystemInfo")
+    public Result<SystemInfo> updateSystemInfo(@RequestBody SystemInfo systemInfo) {
         return systemInfoService.updateSystemInfo(systemInfo);
     }
 
     @GetMapping("/querySystemInfo")
-    public Result<List<SystemInfo>> querySystemInfo(SystemInfo systemInfo) {
+    public Result<PageResponse<List<SystemInfo>>> querySystemInfo(SystemInfo systemInfo) {
         return systemInfoService.querySystemInfo(systemInfo);
     }
 }

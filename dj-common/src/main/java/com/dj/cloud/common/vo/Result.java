@@ -1,4 +1,4 @@
-package com.dj.cloud.object.vo;
+package com.dj.cloud.common.vo;
 
 public class Result<T> {
 
@@ -13,6 +13,10 @@ public class Result<T> {
         return new Result<T>("success", "SC0000", "", payload);
     }
 
+    public static <T> Result<T> newResult(T payload, String type) {
+        return new Result<T>("success", "SC0000", "", payload, type);
+    }
+
     public static <T> Result<T> newFailResult(String responseCode, String responseMessage, T payload) {
         return new Result<T>("fail", responseCode, responseMessage, payload);
     }
@@ -22,6 +26,14 @@ public class Result<T> {
         this.responseCode = responseCode;
         this.responseMessage = responseMessage;
         this.payload = payload;
+    }
+
+    public Result(String status, String responseCode, String responseMessage, T payload, String type) {
+        this.status = status;
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+        this.payload = payload;
+        this.type = type;
     }
 
     public Result(String status, String type, String currentAuthority) {

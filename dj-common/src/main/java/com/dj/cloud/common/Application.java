@@ -1,4 +1,4 @@
-package com.dj.cloud.object;
+package com.dj.cloud.common;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

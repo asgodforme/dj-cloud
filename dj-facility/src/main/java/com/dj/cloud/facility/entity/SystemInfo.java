@@ -1,12 +1,19 @@
 package com.dj.cloud.facility.entity;
 
+import com.dj.cloud.common.base.CommonObject;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class SystemInfo {
+@EntityListeners(AuditingEntityListener.class)
+public class SystemInfo extends CommonObject {
     @Id
     @GeneratedValue
     private Integer id;
@@ -17,10 +24,12 @@ public class SystemInfo {
 
     private Integer port;
 
+    @CreatedDate
     private Date createTime;
 
     private String createUser;
 
+    @LastModifiedDate
     private Date updateTime;
 
     private String updateUser;

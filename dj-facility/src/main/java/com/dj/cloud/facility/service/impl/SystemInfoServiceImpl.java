@@ -1,5 +1,6 @@
 package com.dj.cloud.facility.service.impl;
 
+import com.dj.cloud.common.exception.CoreException;
 import com.dj.cloud.facility.entity.SystemInfo;
 import com.dj.cloud.facility.repository.SystemInfoRepository;
 import com.dj.cloud.facility.service.SystemInfoService;
@@ -34,10 +35,9 @@ public class SystemInfoServiceImpl implements SystemInfoService {
     }
 
     @Override
-    public Result<SystemInfo> updateSystemInfo(SystemInfo systemInfo) {
-        Optional<SystemInfo> localSystemInfoOpt = systemInfoRepository.findById(systemInfo.getId());
-        if (localSystemInfoOpt.isPresent()) throw new RuntimeException();
-        SystemInfo localSystemInfo = localSystemInfoOpt.get();
+    public Result<SystemInfo> updateSystemInfo(SystemInfo systemInfo) throws CoreException {
+        SystemInfo localSystemInfo =  systemInfoRepository.findById(systemInfo.getId())
+                .orElseThrow(() -> new CoreException("system info not exist", "系统信息不存在"));
         BeanUtils.copyProperties(localSystemInfo, systemInfo);
         return Result.newResult(systemInfoRepository.save(systemInfo));
     }

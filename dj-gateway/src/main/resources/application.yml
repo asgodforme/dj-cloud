@@ -28,5 +28,9 @@ spring:
           uri: lb://dj-facility
           predicates:
             - Path=/api/facility/**
+        - id: dj-user
+          uri: lb://dj-user
+          predicates:
+            - Path=/api/user/**
       default-filters:
         - AddRequestHeader=jiangjie, hahahahah2222

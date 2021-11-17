@@ -21,7 +21,7 @@
         <module>dj-feign-api</module>
         <module>dj-gateway</module>
         <module>dj-mybatis</module>
-        <module>dj-object</module>
+        <module>dj-common</module>
         <module>dj-facility</module>
     </modules>
 
@@ -97,6 +97,11 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.7.0</version>
         </dependency>
     </dependencies>
 

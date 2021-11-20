@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
         try {
             CoreException coreException = (CoreException) e;
             return Result.newFailResult(coreException.getResponseCode(), coreException.getResponseMessage(), null);
-        } catch (Throwable throwable) {
-            System.out.println(throwable);
+        } catch (ClassCastException classCastException) {
+            System.out.println(classCastException);
             return Result.newFailResult("ERROR", "系统异常，请联系管理员", null);
         }
     }

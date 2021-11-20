@@ -1,0 +1,56 @@
+package com.dj.cloud.common.vo;
+
+import java.util.Arrays;
+
+public class RoleVo {
+
+    private Integer id;
+
+    private String roleName;
+
+    private String isUse;
+
+    private Integer[] permissionIds;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getIsUse() {
+        return isUse;
+    }
+
+    public void setIsUse(String isUse) {
+        this.isUse = isUse;
+    }
+
+    public Integer[] getPermissionIds() {
+        return permissionIds;
+    }
+
+    public void setPermissionIds(Integer[] permissionIds) {
+        this.permissionIds = permissionIds;
+    }
+
+    @Override
+    public String toString() {
+        return "RoleVo{" +
+                "id=" + id +
+                ", roleName='" + roleName + '\'' +
+                ", isUse='" + isUse + '\'' +
+                ", permissionIds=" + Arrays.toString(permissionIds) +
+                '}';
+    }
+}

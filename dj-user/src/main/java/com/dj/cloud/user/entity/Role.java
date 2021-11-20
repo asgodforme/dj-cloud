@@ -22,11 +22,11 @@ public class Role extends CommonObject {
     private String isUse;
 
 
-    @OneToMany(targetEntity = Permission.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Permission.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,  CascadeType.MERGE})
     @JoinTable(name="role_permission",
             joinColumns = @JoinColumn(name="role_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name="permission_id", referencedColumnName="id"))
-    private Set<Permission> permissions;
+    private List<Permission> permissions;
 
     @CreatedDate
     private Date createTime;
@@ -101,11 +101,11 @@ public class Role extends CommonObject {
         this.roleName = roleName;
     }
 
-    public Set<Permission> getPermissions() {
+    public List<Permission> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<Permission> permissions) {
+    public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
     }
 }

@@ -3,7 +3,10 @@ package com.dj.cloud.user.service.impl;
 import com.dj.cloud.common.exception.CoreException;
 import com.dj.cloud.common.vo.PageResponse;
 import com.dj.cloud.common.vo.Result;
+import com.dj.cloud.common.vo.RoleVo;
+import com.dj.cloud.user.entity.Permission;
 import com.dj.cloud.user.entity.Role;
+import com.dj.cloud.user.repository.PermissionRepository;
 import com.dj.cloud.user.repository.RoleRepository;
 import com.dj.cloud.user.service.RoleService;
 import org.springframework.beans.BeanUtils;
@@ -14,9 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +27,27 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private PermissionRepository permissionRepository;
+
+    private Function<RoleVo, Role> TO_ROLEVO_FROM_ROLE = roleVo -> {
+        Role role = new Role();
+        BeanUtils.copyProperties(roleVo, role);
+        return role;
+    };
+
+    private Function<RoleVo, List<Permission>> TO_PERMISSIONS_FROM_ROLE = roleVo
+            -> permissionRepository.findAllById(Arrays.asList(roleVo.getPermissionIds()));;
+
     @Override
-    public Result<Role> addRole(Role role) {
+    public Result<Role> addRole(RoleVo roleVo) throws CoreException {
+        if (roleVo.getPermissionIds() == null || roleVo.getPermissionIds().length == 0) {
+            throw new CoreException("role's permissions is empty", "请给角色分配权限");
+        }
+
+        Role role = TO_ROLEVO_FROM_ROLE.apply(roleVo);
+        List<Permission> permissions = TO_PERMISSIONS_FROM_ROLE.apply(roleVo);
+        role.setPermissions(permissions);
         return Result.newResult(roleRepository.save(role));
     }
 
@@ -37,10 +58,15 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Result<Role> updateRole(Role role) throws CoreException {
-        Role localSystemInfo = roleRepository.findById(role.getId())
-                .orElseThrow(() -> new CoreException("role info not exist", "角色信息不存在"));
-        BeanUtils.copyProperties(localSystemInfo, role);
+    public Result<Role> updateRole(RoleVo roleVo) throws CoreException {
+        if (roleVo.getPermissionIds() == null || roleVo.getPermissionIds().length == 0) {
+            throw new CoreException("role's permissions is empty", "请给角色分配权限");
+        }
+
+        Role role = TO_ROLEVO_FROM_ROLE.apply(roleVo);
+        List<Permission> permissions = TO_PERMISSIONS_FROM_ROLE.apply(roleVo);
+        role.setPermissions(permissions);
+
         return Result.newResult(roleRepository.save(role));
     }
 

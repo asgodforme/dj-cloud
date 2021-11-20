@@ -1,5 +1,6 @@
 package com.dj.cloud.facility.web;
 
+import com.dj.cloud.common.exception.CoreException;
 import com.dj.cloud.facility.entity.SystemInfo;
 import com.dj.cloud.facility.service.SystemInfoService;
 import com.dj.cloud.common.vo.PageResponse;
@@ -27,7 +28,7 @@ public class SystemInfoController {
     }
 
     @PostMapping("/updateSystemInfo")
-    public Result<SystemInfo> updateSystemInfo(@RequestBody SystemInfo systemInfo) {
+    public Result<SystemInfo> updateSystemInfo(@RequestBody SystemInfo systemInfo) throws CoreException {
         return systemInfoService.updateSystemInfo(systemInfo);
     }
 

@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result<Map<String, Object>> exceptionHandler(Exception e) throws IOException {
         System.out.println("未知异常！原因是:"+e);
+        e.printStackTrace();
         try {
             CoreException coreException = (CoreException) e;
             return Result.newFailResult(coreException.getResponseCode(), coreException.getResponseMessage(), null);

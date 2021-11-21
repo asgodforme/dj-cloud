@@ -16,5 +16,5 @@ public interface RoleService {
 
     Result<Role> updateRole(RoleVo roleVo) throws CoreException;
 
-    Result<PageResponse<List<Role>>> queryRole(Role role);
+    Result<PageResponse<List<Role>>> queryRole(RoleVo roleVo);
 }

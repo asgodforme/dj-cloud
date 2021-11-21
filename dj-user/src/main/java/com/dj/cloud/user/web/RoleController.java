@@ -35,7 +35,7 @@ public class RoleController {
     }
 
     @GetMapping("/queryRole")
-    public Result<PageResponse<List<Role>>> queryRole(Role role) {
-        return roleService.queryRole(role);
+    public Result<PageResponse<List<Role>>> queryRole(RoleVo roleVo) {
+        return roleService.queryRole(roleVo);
     }
 }

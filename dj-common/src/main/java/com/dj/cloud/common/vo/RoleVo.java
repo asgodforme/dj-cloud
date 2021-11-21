@@ -1,8 +1,10 @@
 package com.dj.cloud.common.vo;
 
+import com.dj.cloud.common.base.CommonObject;
+
 import java.util.Arrays;
 
-public class RoleVo {
+public class RoleVo extends CommonObject {
 
     private Integer id;
 

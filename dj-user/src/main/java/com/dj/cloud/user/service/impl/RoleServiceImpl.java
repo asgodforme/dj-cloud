@@ -18,7 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +39,7 @@ public class RoleServiceImpl implements RoleService {
     };
 
     private Function<RoleVo, List<Permission>> TO_PERMISSIONS_FROM_ROLE = roleVo
-            -> permissionRepository.findAllById(Arrays.asList(roleVo.getPermissionIds()));;
+            -> permissionRepository.findAllById(Arrays.asList(roleVo.getPermissionIds()));
 
     @Override
     public Result<Role> addRole(RoleVo roleVo) throws CoreException {
@@ -71,14 +73,34 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Result<PageResponse<List<Role>>> queryRole(Role role) {
-        Pageable pageable = PageRequest.of(role.getCurrent() - 1, role.getPageSize());
-        PageImpl<Role> page = (PageImpl<Role>) roleRepository.findAll(Example.of(role), pageable);
-        List<Role> roles = page.getContent().stream()
-                .map(Role::getId)
-                .map(roleRepository::findById)
-                .map(Optional::get)
-                .collect(Collectors.toList());
-        return Result.newResult(PageResponse.of(page.getTotalElements(), roles), "page");
+    public Result<PageResponse<List<Role>>> queryRole(RoleVo roleVo) {
+        Role role = TO_ROLEVO_FROM_ROLE.apply(roleVo);
+
+        if (roleVo.getPermissionIds() == null || roleVo.getPermissionIds().length == 0) {
+            Pageable pageable = PageRequest.of(role.getCurrent() - 1, role.getPageSize());
+            PageImpl<Role> page = (PageImpl<Role>) roleRepository.findAll(Example.of(role), pageable);
+            List<Role> roles = page.getContent().stream()
+                    .map(Role::getId)
+                    .map(roleRepository::findById)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
+            return Result.newResult(PageResponse.of(page.getTotalElements(), roles), "page");
+        } else {
+            List<Permission> queryPermission = TO_PERMISSIONS_FROM_ROLE.apply(roleVo);
+            role.setPermissions(queryPermission);
+            List<Role> roles = roleRepository.findAll(Example.of(role));
+
+            roles = roles.stream()
+                    .filter(r -> r.getPermissions().stream().filter(f -> queryPermission.contains(f)).count() > 0)
+                    .collect(Collectors.toList());
+
+            int startIndex = (role.getCurrent() - 1) * role.getPageSize();
+            int endIndex = role.getCurrent()  * role.getPageSize();
+            endIndex = endIndex > roles.size() ? roles.size() : endIndex - 1;
+            long total = roles.size();
+
+            return Result.newResult(PageResponse.of(total, roles.subList(startIndex, endIndex)), "page");
+        }
     }
+
 }

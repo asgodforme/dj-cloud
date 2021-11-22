@@ -2,8 +2,6 @@ package com.dj.cloud.common.vo;
 
 import com.dj.cloud.common.base.CommonObject;
 
-import java.util.Arrays;
-
 public class RoleVo extends CommonObject {
 
     private Integer id;
@@ -46,13 +44,4 @@ public class RoleVo extends CommonObject {
         this.permissionIds = permissionIds;
     }
 
-    @Override
-    public String toString() {
-        return "RoleVo{" +
-                "id=" + id +
-                ", roleName='" + roleName + '\'' +
-                ", isUse='" + isUse + '\'' +
-                ", permissionIds=" + Arrays.toString(permissionIds) +
-                '}';
-    }
 }

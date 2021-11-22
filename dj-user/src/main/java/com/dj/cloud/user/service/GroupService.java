@@ -5,6 +5,7 @@ import com.dj.cloud.common.vo.PageResponse;
 import com.dj.cloud.common.vo.Result;
 import com.dj.cloud.common.vo.GroupVo;
 import com.dj.cloud.user.entity.Group;
+import com.dj.cloud.user.entity.Role;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface GroupService {
     Result<Group> updateGroup(GroupVo groupVo) throws CoreException;
 
     Result<PageResponse<List<Group>>> queryGroup(Group group);
+
+    Result<Group> allocateRole(GroupVo groupVo) throws CoreException;
 }

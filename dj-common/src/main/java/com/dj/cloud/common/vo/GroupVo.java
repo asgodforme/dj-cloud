@@ -2,8 +2,6 @@ package com.dj.cloud.common.vo;
 
 import com.dj.cloud.common.base.CommonObject;
 
-import java.util.Arrays;
-
 public class GroupVo extends CommonObject {
 
     private Integer id;
@@ -13,6 +11,8 @@ public class GroupVo extends CommonObject {
     private String isUse;
 
     private Integer[] userIds;
+
+    private Integer[] roleIds;
 
     public Integer getId() {
         return id;
@@ -44,5 +44,13 @@ public class GroupVo extends CommonObject {
 
     public void setUserIds(Integer[] userIds) {
         this.userIds = userIds;
+    }
+
+    public Integer[] getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(Integer[] roleIds) {
+        this.roleIds = roleIds;
     }
 }

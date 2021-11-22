@@ -1,12 +1,12 @@
 package com.dj.cloud.user.service.impl;
 
 import com.dj.cloud.common.exception.CoreException;
+import com.dj.cloud.common.utils.BeanUtils;
 import com.dj.cloud.common.vo.PageResponse;
 import com.dj.cloud.common.vo.Result;
 import com.dj.cloud.user.entity.Permission;
 import com.dj.cloud.user.repository.PermissionRepository;
 import com.dj.cloud.user.service.PermissionService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
@@ -24,10 +25,11 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Result<Permission> updatePermission(Permission permission) throws CoreException {
-        Permission localSystemInfo = permissionRepository.findById(permission.getId())
+        Permission origin = permissionRepository.findById(permission.getId())
                 .orElseThrow(() ->  new CoreException("system info not exist", "权限信息不存在"));
-        localSystemInfo.setIsUse(permission.getIsUse());
-        return Result.newResult(permissionRepository.save(localSystemInfo));
+        Map<String, Object> originMap = BeanUtils.toMap(origin);
+        originMap.putAll(BeanUtils.toMap(permission));
+        return Result.newResult(permissionRepository.save(BeanUtils.toObject(originMap, Permission.class)));
     }
 
     @Override

@@ -5,7 +5,9 @@ import com.dj.cloud.common.exception.CoreException;
 import com.dj.cloud.common.vo.PageResponse;
 import com.dj.cloud.common.vo.Result;
 import com.dj.cloud.common.vo.GroupVo;
+import com.dj.cloud.common.vo.RoleVo;
 import com.dj.cloud.user.entity.Group;
+import com.dj.cloud.user.entity.Role;
 import com.dj.cloud.user.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +39,10 @@ public class GroupController {
     @GetMapping("/queryGroup")
     public Result<PageResponse<List<Group>>> queryGroup(Group group) {
         return groupService.queryGroup(group);
+    }
+
+    @PostMapping("/allocateRole")
+    public Result<Group> allocateRole(@RequestBody GroupVo groupVo) throws CoreException {
+        return groupService.allocateRole(groupVo);
     }
 }

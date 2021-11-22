@@ -65,16 +65,22 @@ public class RoleServiceImpl implements RoleService {
             throw new CoreException("role's permissions is empty", "请给角色分配权限");
         }
 
-        Role role = TO_ROLEVO_FROM_ROLE.apply(roleVo);
-        List<Permission> permissions = TO_PERMISSIONS_FROM_ROLE.apply(roleVo);
-        role.setPermissions(permissions);
-
+        Role origin = roleRepository.findById(roleVo.getId()).orElseThrow(() -> new CoreException("role is not exist", "角色不存在！"));
+        Map<String, Object> originMap = com.dj.cloud.common.utils.BeanUtils.toMap(origin);
+        originMap.putAll(com.dj.cloud.common.utils.BeanUtils.toMap(TO_ROLEVO_FROM_ROLE.apply(roleVo)));
+        Role role = com.dj.cloud.common.utils.BeanUtils.toObject(originMap, Role.class);
+        role.setPermissions(TO_PERMISSIONS_FROM_ROLE.apply(roleVo));
         return Result.newResult(roleRepository.save(role));
     }
 
     @Override
     public Result<PageResponse<List<Role>>> queryRole(RoleVo roleVo) {
         Role role = TO_ROLEVO_FROM_ROLE.apply(roleVo);
+
+        if (role.getCurrent() == null || role.getPageSize() == null) {
+            List<Role> all = roleRepository.findAll(Example.of(role));
+            return Result.newResult(PageResponse.of(all.size(), all));
+        }
 
         if (roleVo.getPermissionIds() == null || roleVo.getPermissionIds().length == 0) {
             Pageable pageable = PageRequest.of(role.getCurrent() - 1, role.getPageSize());

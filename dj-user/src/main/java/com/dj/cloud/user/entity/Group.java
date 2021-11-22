@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "groups")
@@ -26,6 +27,12 @@ public class Group extends CommonObject {
             joinColumns = @JoinColumn(name="group_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name="user_id", referencedColumnName="id"))
     private List<User> users;
+
+    @OneToMany(targetEntity = Role.class, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,  CascadeType.MERGE})
+    @JoinTable(name="group_role",
+            joinColumns = @JoinColumn(name="group_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName="id"))
+    private Set<Role> roles;
 
     @CreatedDate
     private Date createTime;
@@ -106,5 +113,28 @@ public class Group extends CommonObject {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id=" + id +
+                ", groupName='" + groupName + '\'' +
+                ", isUse='" + isUse + '\'' +
+                ", users=" + users +
+                ", roles=" + roles +
+                ", createTime=" + createTime +
+                ", createUser='" + createUser + '\'' +
+                ", updateTime=" + updateTime +
+                ", updateUser='" + updateUser + '\'' +
+                '}';
     }
 }

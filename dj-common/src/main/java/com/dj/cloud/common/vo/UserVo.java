@@ -41,5 +41,4 @@ public class UserVo {
     public void setAccount(String account) {
         this.account = account;
     }
-
 }

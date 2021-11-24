@@ -14,8 +14,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -50,5 +52,13 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = PageRequest.of(user.getCurrent() - 1, user.getPageSize());
         PageImpl<User> page = (PageImpl<User>) userRepository.findAll(Example.of(user), pageable);
         return Result.newResult(PageResponse.of(page.getTotalElements(), page.getContent()), "page");
+    }
+
+    @Override
+    public Result<User> getUser(UserVo userVo) throws CoreException {
+        User user = TO_USER_FROM_USERVO.apply(userVo);
+        List<User> users = userRepository.findAll(Example.of(user));
+        if (CollectionUtils.isEmpty(users)) throw new CoreException("user not exist", "用户不存在");
+        return Result.newResult(users.get(0));
     }
 }

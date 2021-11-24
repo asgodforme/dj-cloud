@@ -1,6 +1,8 @@
 package com.dj.cloud.common.vo;
 
-public class UserVo {
+import java.io.Serializable;
+
+public class UserVo implements Serializable {
 
     private Integer id;
 
@@ -40,5 +42,15 @@ public class UserVo {
 
     public void setAccount(String account) {
         this.account = account;
+    }
+
+    @Override
+    public String toString() {
+        return "UserVo{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", account='" + account + '\'' +
+                '}';
     }
 }

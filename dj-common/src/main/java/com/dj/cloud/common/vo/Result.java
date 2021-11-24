@@ -4,10 +4,12 @@ public class Result<T> {
 
     private String status;
     private String type;
-    private String currentAuthority;
     private String responseCode;
     private String responseMessage;
     private T payload;
+
+    public Result() {
+    }
 
     public static <T> Result<T> newResult(T payload) {
         return new Result<T>("success", "SC0000", "", payload);
@@ -39,7 +41,6 @@ public class Result<T> {
     public Result(String status, String type, String currentAuthority) {
         this.status = status;
         this.type = type;
-        this.currentAuthority = currentAuthority;
     }
 
     public String getStatus() {
@@ -56,14 +57,6 @@ public class Result<T> {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getCurrentAuthority() {
-        return currentAuthority;
-    }
-
-    public void setCurrentAuthority(String currentAuthority) {
-        this.currentAuthority = currentAuthority;
     }
 
     public String getResponseCode() {

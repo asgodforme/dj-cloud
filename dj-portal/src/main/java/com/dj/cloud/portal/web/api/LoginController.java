@@ -1,11 +1,13 @@
 package com.dj.cloud.portal.web.api;
 
+import com.dj.cloud.common.exception.CoreException;
 import com.dj.cloud.common.vo.Result;
+import com.dj.cloud.common.vo.UserVo;
+import com.dj.cloud.user.entity.User;
 import com.google.gson.Gson;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.dj.cloud.feign.client.DjUserClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -13,9 +15,20 @@ import java.util.Map;
 @RequestMapping("/api/portal")
 public class LoginController {
 
+    @Autowired
+    private DjUserClient djUserClient;
+
     @PostMapping("/login/account")
-    public Result account() {
-        return new Result("ok", "account", "admin");
+    public Result<User> account(@RequestBody UserVo userVo) throws CoreException {
+        // return new Result("ok", "account", "admin");
+        System.out.println(userVo);
+        return djUserClient.getUser(userVo);
+    }
+
+    @PostMapping("/outLogin")
+    public Result outLogin() throws CoreException {
+        // return new Result("ok", "account", "admin");
+        return Result.newResult(null);
     }
 
     @GetMapping("/currentUser")

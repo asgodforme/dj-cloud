@@ -15,4 +15,6 @@ public interface UserService {
     Result<User> deleteUser(Integer id);
 
     Result<PageResponse<List<User>>> queryUser(User user);
+
+    Result<User> getUser(UserVo userVo) throws CoreException;
 }

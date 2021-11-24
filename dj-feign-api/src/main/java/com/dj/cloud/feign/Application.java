@@ -1,4 +1,4 @@
-package com.jd.cloud.feign;
+package com.dj.cloud.feign;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

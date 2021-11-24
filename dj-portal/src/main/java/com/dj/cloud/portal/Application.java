@@ -3,6 +3,7 @@ package com.dj.cloud.portal;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * 服务提供者：
@@ -27,7 +28,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan("com.dj.cloud.portal.mapper")
 //@EnableDiscoveryClient // 开启注册到注册中心
-//@EnableFeignClients(clients={ TimeClient.class }) // (defaultConfiguration= FeignClientConfiguration.class) // 开启声明式接口调用feign
+@EnableFeignClients(basePackages = {"com.dj.cloud.feign"})
+//(clients={ TimeClient.class }) // (defaultConfiguration= FeignClientConfiguration.class) // 开启声明式接口调用feign
 public class Application {
 
 //    @Bean

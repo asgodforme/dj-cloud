@@ -1,6 +1,6 @@
-package com.jd.cloud.feign.client;
+package com.dj.cloud.feign.client;
 
-import com.jd.cloud.feign.config.FeignClientConfiguration;
+import com.dj.cloud.feign.config.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  *
  */
-@FeignClient(value="djuser", configuration= FeignClientConfiguration.class)
+//@FeignClient(value="djuser", configuration= FeignClientConfiguration.class)
 public interface TimeClient {
 
     @RequestMapping("/hello")

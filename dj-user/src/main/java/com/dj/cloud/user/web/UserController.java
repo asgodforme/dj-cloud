@@ -33,4 +33,10 @@ public class UserController {
     public Result<PageResponse<List<User>>> queryUser(User user) {
         return userService.queryUser(user);
     }
+
+    @PostMapping("/getUser")
+    public Result<User> getUser(@RequestBody UserVo userVo) throws CoreException {
+        System.out.println(userVo);
+        return userService.getUser(userVo);
+    }
 }

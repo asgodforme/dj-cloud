@@ -3,12 +3,15 @@ package com.dj.cloud.portal.web.api;
 import com.dj.cloud.common.exception.CoreException;
 import com.dj.cloud.common.vo.Result;
 import com.dj.cloud.common.vo.UserVo;
+import com.dj.cloud.portal.jwt.JwtUtils;
+import com.dj.cloud.portal.jwt.Session;
 import com.dj.cloud.user.entity.User;
 import com.google.gson.Gson;
 import com.dj.cloud.feign.client.DjUserClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -19,10 +22,17 @@ public class LoginController {
     private DjUserClient djUserClient;
 
     @PostMapping("/login/account")
-    public Result<User> account(@RequestBody UserVo userVo) throws CoreException {
-        // return new Result("ok", "account", "admin");
+    public Result<Map<String, Object>> account(@RequestBody UserVo userVo) throws CoreException {
         System.out.println(userVo);
-        return djUserClient.getUser(userVo);
+        Result<User> currentUser = djUserClient.getUser(userVo);
+        Session session = new Session();
+        session.setUserId(currentUser.getPayload().getId());
+        session.setUserName(currentUser.getPayload().getUserName());
+        String token = JwtUtils.generateToken(session);
+        Map<String, Object> response = new HashMap<>();
+        response.put("userName", session.getUserName());
+        response.put("token", token);
+        return Result.newResult(response);
     }
 
     @PostMapping("/outLogin")

@@ -18,6 +18,10 @@ public class AuthorizeFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         HttpHeaders headers = request.getHeaders();
+        if (headers.get("Authorization") == null) {
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
+        }
         System.out.println(headers.get("Authorization"));
         MultiValueMap<String, String> queryParams = request.getQueryParams();
         String auth = queryParams.getFirst("auth");

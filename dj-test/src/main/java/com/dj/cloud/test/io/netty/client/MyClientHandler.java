@@ -14,6 +14,7 @@ public class MyClientHandler extends SimpleChannelInboundHandler<String> {
         //通知客户端链消息发送成功
         String str = "客户端收到：" + new Date() + " " + msg + "\r\n";
         System.out.println("客户端收到："+ str);
+        ctx.writeAndFlush(str);
     }
 
     @Override

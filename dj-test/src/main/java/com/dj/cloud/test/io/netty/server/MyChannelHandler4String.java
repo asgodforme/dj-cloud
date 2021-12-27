@@ -12,7 +12,9 @@ public class MyChannelHandler4String extends SimpleChannelInboundHandler<String>
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         System.out.println("服务端收到消息：" + msg);
-        ChannelHandler.channelGroup.writeAndFlush(msg +  "\r\n");
+//        ChannelHandler.channelGroup.writeAndFlush(msg +  "\r\n");
+//        ChannelHandler.channelGroup.writeAndFlush(msg.getBytes(StandardCharsets.UTF_8));
+            ctx.channel().writeAndFlush(msg.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

@@ -10,16 +10,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>dj-common</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>${spring.amqp.version}</version>
         </dependency>
     </dependencies>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <spring.amqp.version>2.4.1</spring.amqp.version>
     </properties>
 
 </project>

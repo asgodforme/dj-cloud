@@ -2,22 +2,17 @@ package org.itstack.demo.netty.client;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.EventLoop;
 import io.netty.channel.socket.SocketChannel;
-import org.itstack.demo.netty.domain.Constants;
-import org.itstack.demo.netty.domain.FileBurstData;
-import org.itstack.demo.netty.domain.FileBurstInstruct;
-import org.itstack.demo.netty.domain.FileTransferProtocol;
-import org.itstack.demo.netty.util.FileUtil;
-import org.itstack.demo.netty.util.MsgUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 虫洞栈：https://bugstack.cn
  * 公众号：bugstack虫洞栈  ｛获取学习源码｝
- * 虫洞群：5360692
- * Create by fuzhengwei on @2019
+ * Create by fuzhengwei on 2019
  */
 public class MyClientHandler extends ChannelInboundHandlerAdapter {
 
@@ -39,43 +34,26 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("断开链接" + ctx.channel().localAddress().toString());
-        super.channelInactive(ctx);
+        System.out.println("断开链接重连" + ctx.channel().localAddress().toString());
+        //使用过程中断线重连
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new NettyClient().connect("127.0.0.1", 7397);
+                    System.out.println("itstack-demo-netty client start done. {关注公众号：bugstack虫洞栈，获取源码}");
+                    Thread.sleep(500);
+                } catch (Exception e){
+                    System.out.println("itstack-demo-netty client start error go reconnect ... {关注公众号：bugstack虫洞栈，获取源码}");
+                }
+            }
+        }).start();
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println(msg);
-        //数据格式验证
-        if (!(msg instanceof FileTransferProtocol)) return;
-
-        FileTransferProtocol fileTransferProtocol = (FileTransferProtocol) msg;
-        //0传输文件'请求'、1文件传输'指令'、2文件传输'数据'
-        switch (fileTransferProtocol.getTransferType()) {
-            case 1:
-                FileBurstInstruct fileBurstInstruct = (FileBurstInstruct) fileTransferProtocol.getTransferObj();
-                //Constants.FileStatus ｛0开始、1中间、2结尾、3完成｝
-                if (Constants.FileStatus.COMPLETE == fileBurstInstruct.getStatus()) {
-                    ctx.flush();
-                    ctx.close();
-                    System.exit(-1);
-                    return;
-                }
-                FileBurstData fileBurstData = FileUtil.readFile(fileBurstInstruct.getClientFileUrl(), fileBurstInstruct.getReadPosition());
-                ctx.writeAndFlush(MsgUtil.buildTransferData(fileBurstData));
-                System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " bugstack虫洞栈客户端传输文件信息。 FILE：" + fileBurstData.getFileName() + " SIZE(byte)：" + (fileBurstData.getEndPos() - fileBurstData.getBeginPos()));
-                break;
-            default:
-                break;
-        }
-
-        /**模拟传输过程中断，场景测试可以注释掉
-         *
-
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " bugstack虫洞栈客户端传输文件信息[主动断开链接，模拟断点续传]");
-        ctx.flush();
-        ctx.close();
-        System.exit(-1);*/
+        //接收msg消息{与上一章节相比，此处已经不需要自己进行解码}
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " 接收到消息：" + msg);
     }
 
     /**
@@ -83,8 +61,8 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        System.out.println("异常信息，断开重连：\r\n" + cause.getMessage());
         ctx.close();
-        System.out.println("异常信息：\r\n" + cause.getMessage());
     }
 
 }

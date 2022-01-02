@@ -5,6 +5,7 @@ import com.dj.cloud.common.exception.CoreException;
 import com.dj.cloud.common.vo.PageResponse;
 import com.dj.cloud.common.vo.Result;
 import com.dj.cloud.common.vo.UserVo;
+import com.dj.cloud.rabbitmq.util.MqClient;
 import com.dj.cloud.user.entity.User;
 import com.dj.cloud.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,4 +40,14 @@ public class UserController {
         System.out.println(userVo);
         return userService.getUser(userVo);
     }
+
+    @Autowired
+    private MqClient mqClient;
+
+    @GetMapping("/send")
+    public String queryUser(@RequestParam String appName) {
+        mqClient.sendAndReceive(appName);
+        return "success";
+    }
+
 }

@@ -5,6 +5,9 @@ import mq.quickstart.nettyctmq.domain.RabbitMQFrame;
 
 public interface Mashaller {
 
+    int PROPERTY_STRING = 0x53000000;
+    int PROPERTY_FIELD_TABLE = 0x46000000;
+
     /**
      * 字节流转换成rabbit帧对象
      * @param byteBuf
@@ -18,4 +21,6 @@ public interface Mashaller {
      * @return
      */
     ByteBuf mashallerOk(RabbitMQFrame rabbitMQFrame);
+
+    ByteBuf requestPackage(RabbitMQFrame rabbitMQFrame);
 }

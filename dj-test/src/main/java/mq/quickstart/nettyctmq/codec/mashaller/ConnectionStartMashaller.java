@@ -1,43 +1,28 @@
 package mq.quickstart.nettyctmq.codec.mashaller;
 
 import io.netty.buffer.ByteBuf;
-import mq.quickstart.nettyctmq.domain.AbstractPayload;
+import io.netty.buffer.ByteBufAllocator;
 import mq.quickstart.nettyctmq.domain.MethodFrame;
 import mq.quickstart.nettyctmq.domain.RabbitMQFrame;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConnectionStartMashaller implements Mashaller {
+public class ConnectionStartMashaller extends AbstractMashaller {
 
-    @Override
-    public RabbitMQFrame mashallerDo(ByteBuf in) {
-        in.resetReaderIndex();
-        RabbitMQFrame rabbitMQFrame = new RabbitMQFrame();
-        byte type = in.readByte(); // 帧类型
-        rabbitMQFrame.setFrameType(type);
-        short channel = in.readShort(); // 信道编号
-        rabbitMQFrame.setChannelNo(channel);
-        long size = in.readInt(); // 帧大小
-        rabbitMQFrame.setFrameLength(size);
+    private static final Map<String, String> clientPropMap = new HashMap<>();
 
-        ByteBuf payload = in.readBytes((int) size);
-        rabbitMQFrame.setPayload(marshallerPayload(payload));
-        String frameEnd = Integer.toHexString(in.readByte() & 0xff); // 结束标识
-        rabbitMQFrame.setEndFlg(frameEnd);
-        return rabbitMQFrame;
+    static {
+        clientPropMap.put("connection_name", "netty-connection-rabbitmq");
+        clientPropMap.put("product", "RabbitMQ");
+        clientPropMap.put("copyright", "jiang@jie.com");
+        clientPropMap.put("information", "hello, rabbitmq");
+        clientPropMap.put("version", "1.1.1");
+        clientPropMap.put("platform", "java");
     }
 
-    private AbstractPayload marshallerPayload(ByteBuf in) {
-        MethodFrame methodFrame = new MethodFrame();
-        short classId = in.readShort();
-        methodFrame.setClassId(classId);
-        short methodId = in.readShort();
-        methodFrame.setMethodId(methodId);
-        Map<String, Object> arguments = new HashMap<>();
-        methodFrame.setArguments(arguments);
-
-
+    @Override
+    protected void mashallerArguments(ByteBuf in, Map<String, Object> arguments) {
         byte versionMajor = in.readByte();
         arguments.put("versionMajor", versionMajor);
         byte versionMinor = in.readByte();
@@ -50,8 +35,6 @@ public class ConnectionStartMashaller implements Mashaller {
 
         byte[] localesByte = getBytesFromByteBuf(in, in.readInt());
         arguments.put("locales", new String(localesByte));
-
-        return methodFrame;
     }
 
     private void marshallerServerProperties(Map<String, Object> argumentsMap, ByteBuf in) {
@@ -74,15 +57,14 @@ public class ConnectionStartMashaller implements Mashaller {
 
             String valueType = Integer.toHexString(arguments.readInt());
 
-            arguments.markReaderIndex();
-            byte[] valueByte = getBytesFromByteBuf(arguments, arguments.readByte());
-            String value = new String(valueByte);
-
             /** field table 类型，其中的数据域第一个字节表示key的长度，boolean类型默认为一个字节的t表示，然后一个结束符 */
             if ("46000000".equals(valueType)) {
                 Map<String, Object> map = new HashMap<>();
-                arguments.resetReaderIndex();
                 ByteBuf valueByteBuf = arguments.readBytes(arguments.readByte() & 0xff);
+                byte[] capabilities = new byte[valueByteBuf.readableBytes()];
+                valueByteBuf.readBytes(capabilities);
+                argumentsMap.put(key + "_bytes", capabilities);
+                valueByteBuf.resetReaderIndex();
                 while (valueByteBuf.readableBytes() != 0) {
                     byte[] subValueByte = getBytesFromByteBuf(valueByteBuf, valueByteBuf.readByte());
                     map.put(new String(subValueByte), (char) valueByteBuf.readByte());
@@ -90,21 +72,52 @@ public class ConnectionStartMashaller implements Mashaller {
                 }
                 argumentsMap.put(key, map);
             } else {
+                byte[] valueByte = getBytesFromByteBuf(arguments, arguments.readByte());
+                String value = new String(valueByte);
                 argumentsMap.put(key, value);
             }
         }
     }
 
-    private byte[] getBytesFromByteBuf(ByteBuf arguments, int b) {
-        ByteBuf keyByteBuf = arguments.readBytes(b & 0xff);
-        byte[] keyByte = new byte[keyByteBuf.readableBytes()];
-        keyByteBuf.readBytes(keyByte);
-        return keyByte;
-    }
-
-
     @Override
-    public ByteBuf mashallerOk(RabbitMQFrame rabbitMQFrame) {
-        return null;
+    protected void marshallerOkArgument(RabbitMQFrame rabbitMQFrame, ByteBuf respByteBuf) {
+        // Arguments: Client-Properties, Mechanism, Response, Locale
+        ByteBuf arguments = ByteBufAllocator.DEFAULT.buffer();
+        // Client-Properties: 1字节来描述key的长度length+ length长度的key + 4字节的类型 + 1字节的长度length1 + length1长度的value
+        MethodFrame methodFrame = (MethodFrame) rabbitMQFrame.getPayload();
+        ByteBuf clientProperties = ByteBufAllocator.DEFAULT.buffer();
+        populateClientProperties(clientProperties, "capabilities", (byte[]) methodFrame.getArguments().get("capabilities_bytes"));
+        clientPropMap.forEach((key, value) -> {
+            populateClientProperties(clientProperties, key, value);
+        });
+
+        arguments.writeInt(clientProperties.readableBytes());
+        arguments.writeBytes(clientProperties);
+
+        // Mechanism
+        byte[] mechanism = "PLAIN".getBytes();
+        arguments.writeByte(mechanism.length);
+        arguments.writeBytes(mechanism);
+
+        // Response
+        ByteBuf rspByteBuf = ByteBufAllocator.DEFAULT.buffer();
+        rspByteBuf.writeByte(0);
+        rspByteBuf.writeBytes("guest".getBytes());
+        rspByteBuf.writeByte(0);
+        rspByteBuf.writeBytes("guest".getBytes());
+        arguments.writeInt(rspByteBuf.readableBytes());
+        arguments.writeBytes(rspByteBuf);
+
+        // Locale
+        byte[] locale = "en_US".getBytes();
+        arguments.writeByte(locale.length);
+        arguments.writeBytes(locale);
+
+        // payload: Class, Method, Arguments
+        ByteBuf payload = ByteBufAllocator.DEFAULT.buffer();
+        payload.writeShort(10).writeShort(11).writeBytes(arguments);
+
+        // 数据长度
+        respByteBuf.writeInt(payload.readableBytes()).writeBytes(payload).writeByte(0xce);
     }
 }

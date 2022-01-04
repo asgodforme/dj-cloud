@@ -10,6 +10,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import mq.quickstart.nettyctmq.codec.ByteToRabbitMQFrameDecoder;
 import mq.quickstart.nettyctmq.handler.MqHandler;
+import mq.quickstart.nettyctmq.handler.MqOutHandler;
 
 public class Client {
 
@@ -25,6 +26,7 @@ public class Client {
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast(new ByteToRabbitMQFrameDecoder());
                     ch.pipeline().addLast(new MqHandler());
+                    ch.pipeline().addLast(new MqOutHandler());
                 }
             });
             ChannelFuture f = b.connect("192.168.13.129", 5672).sync();

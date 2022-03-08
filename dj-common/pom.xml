@@ -21,6 +21,10 @@
             <artifactId>spring-rabbit</artifactId>
             <version>${spring.amqp.version}</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+        </dependency>
     </dependencies>
 
     <properties>

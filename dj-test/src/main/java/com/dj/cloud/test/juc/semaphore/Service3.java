@@ -7,17 +7,17 @@ public class Service3 {
 
     public void testMethod() {
         try {
-            semaphore.acquireUninterruptibly(1);
-//            semaphore.acquire(1);
+//            semaphore.acquireUninterruptibly(1);
+            semaphore.acquire(1);
             System.out.println(Thread.currentThread().getName() + " begin time: " + System.currentTimeMillis());
             System.out.println(Thread.currentThread().isInterrupted());
             Thread.sleep(10000);
 //            while (!Thread.currentThread().isInterrupted()) {
             while (!Thread.currentThread().isInterrupted()) {
-//                System.out.println("1");
+                System.out.println("1");
 //                System.out.println(Thread.currentThread().isInterrupted());
             }
-//            System.out.println(Thread.currentThread().getName() + " end time: " + System.currentTimeMillis());
+            System.out.println(Thread.currentThread().getName() + " end time: " + System.currentTimeMillis());
         } catch (InterruptedException e) {
             System.out.println(Thread.currentThread().getName() + "被中断");
             System.out.println(Thread.currentThread().isInterrupted());
@@ -63,7 +63,7 @@ public class Service3 {
         threadB.start();
 
         Thread.sleep(1000);
-//        threadB.interrupt();
+        threadB.interrupt();
         Thread.sleep(5000);
         System.out.println(threadB.isInterrupted());
 

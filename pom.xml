@@ -23,6 +23,7 @@
         <module>dj-mybatis</module>
         <module>dj-common</module>
         <module>dj-facility</module>
+        <module>own-protocol</module>
     </modules>
 
     <properties>

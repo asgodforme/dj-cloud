@@ -19,7 +19,7 @@ public class TestSubscribeReqProto {
 
     private static SubscribeReqProto.SubscribeReq createSubscribeReq() {
         SubscribeReqProto.SubscribeReq.Builder builder = SubscribeReqProto.SubscribeReq.newBuilder();
-        builder.setSubReqId(1);
+        builder.setSubReqId(122222);
         builder.setUserName("jiangjie");
         builder.setProductName("netty book");
         List<String> address = new ArrayList<>();

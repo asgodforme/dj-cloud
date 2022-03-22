@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+
+package hello;
+option java_package = "com.dj.hello";
+
+option java_outer_classname = "HelloProto";
+option objc_class_prefix = "HEL";
+
+message Request {
+  string message = 1;
+}
+
+message Response {
+  string message = 1;
+}
+
+service HelloService {
+  rpc Hello(Request) returns (Response) {}
+  rpc HelloStream(Request) returns (stream Response) {}
+  rpc HelloSingleStream(stream Request) returns (Response) {}
+  rpc HelloDoubleStream(stream Request) returns (stream Response) {}
+}

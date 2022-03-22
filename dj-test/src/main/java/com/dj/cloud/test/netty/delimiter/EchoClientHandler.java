@@ -25,7 +25,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1; i++) {
             ctx.writeAndFlush(Unpooled.copiedBuffer(ECHO.getBytes(StandardCharsets.UTF_8)));
         }
     }

@@ -117,6 +117,18 @@
             <artifactId>spring-rabbit</artifactId>
             <version>2.4.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.iweinzierl</groupId>
+            <artifactId>jsonformat</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>xin.xihc</groupId>
+            <artifactId>CommonUtils</artifactId>
+            <version>1.20.9</version>
+            <scope>compile</scope>
+        </dependency>
 
 
     </dependencies>

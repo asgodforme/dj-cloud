@@ -24,4 +24,22 @@ public class EchoServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
         ByteBuf echo = Unpooled.copiedBuffer(body.getBytes(StandardCharsets.UTF_8));
         ctx.writeAndFlush(echo);
     }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        super.channelUnregistered(ctx);
+        System.out.println("Channel已经被创建，但是还没有被注册到EventLoop");
+    }
+
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        super.channelRegistered(ctx);
+        System.out.println("Channel已经被创建并绑定到EventLoop");
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        super.handlerAdded(ctx);
+        System.out.println("EchoServerHandler被加入到ChannelPipeline");
+    }
 }

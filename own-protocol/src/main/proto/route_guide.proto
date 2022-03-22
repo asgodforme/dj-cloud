@@ -1,0 +1,77 @@
+syntax = "proto3"; // proto3语法
+
+
+option java_multiple_files = true; //为每个顶级节点生成.java源文件
+
+// 如果没有指定java_package,则会使用package作为包路径。
+package routeguide;
+option java_package = "com.dj.grpc.routeguide"; //生成.java源文件的包路径
+
+
+option java_outer_classname = "RouteGuideProto"; // 外部类的名称
+option objc_class_prefix = "RTG"; //
+
+/**
+自动生成代码步骤：
+1. 将proto文件放到src/main/proto文件下。
+2. 添加合适的插件
+3. 运行maven install进行
+ */
+
+
+
+/**
+  路由导航
+ */
+service RouteGuide {
+  rpc GetFeature(Point) returns (Feature) {}
+  rpc ListFeature(Rectangle) returns (stream Feature) {}
+  rpc RecordRoute(stream Point) returns (RouteSummary) {}
+  rpc RouteChat(stream RouteNote) returns (stream RouteNote){}
+}
+
+/**
+      点
+ */
+message Point {
+  int32 latitude = 1; // 经度
+  int32 longitude = 2; // 纬度
+}
+
+/**
+    形状：两个点的经度纬度确认一个形状
+ */
+message Rectangle {
+  Point lo = 1;
+  Point hi = 2;
+}
+
+/**
+   某个点的特点
+ */
+message Feature {
+  string name = 1;
+  Point location = 2;
+}
+
+message FeatureDatabase {
+  repeated Feature feature = 1;
+}
+
+/**
+  路由记录： 发送到某个点的信息
+ */
+message RouteNote {
+  Point location = 1;
+  string message = 2;
+}
+
+/**
+  路由摘要
+ */
+message RouteSummary {
+  int32 point_count = 1; // 路线上点的个数
+  int32 feature_count = 2; //  路线上特性的个数
+  int32 distance = 3; // 距离
+  int32 elapsed_time = 4; // 花费的时间
+}

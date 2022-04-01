@@ -11,6 +11,7 @@ public class MyService {
     public void testMethod() {
         try {
             System.out.println(Thread.currentThread().getName() + " 准备！" + System.currentTimeMillis());
+            System.out.println(cyclicBarrier.getNumberWaiting());
             cyclicBarrier.await();
             System.out.println(Thread.currentThread().getName() + " 结束！" + System.currentTimeMillis());
         } catch (InterruptedException e) {

@@ -1,7 +1,5 @@
 package com.dj.hello.client;
 
-import static com.dj.hello.HelloServiceGrpc.*;
-
 import com.dj.hello.HelloServiceGrpc;
 import com.dj.hello.Request;
 import com.dj.hello.Response;
@@ -10,10 +8,13 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 
-import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import static com.dj.hello.HelloServiceGrpc.HelloServiceBlockingStub;
+import static com.dj.hello.HelloServiceGrpc.HelloServiceStub;
 
 public class HelloClient {
 
@@ -26,6 +27,11 @@ public class HelloClient {
     }
 
     public void hello() {
+        Request request = Request.newBuilder().setMessage("我是hello请求者").build();
+        for (byte b : request.toByteArray()) {
+            System.out.println(b);
+
+        }
         Response rep = blockingStub.hello(Request.newBuilder().setMessage("我是hello请求者").build());
         System.out.println("hello 返回: " + rep.getMessage());
     }
@@ -112,11 +118,11 @@ public class HelloClient {
     public static void main(String[] args) throws InterruptedException {
         ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:8080").usePlaintext().build();
         HelloClient helloClient = new HelloClient(managedChannel);
-//        helloClient.hello();
+        helloClient.hello();
 //        helloClient.helloStream();
 //        helloClient.helloSingleStream();
-        CountDownLatch finishLatch = helloClient.helloDoubleStream();
-        finishLatch.await();
+//        CountDownLatch finishLatch = helloClient.helloDoubleStream();
+//        finishLatch.await();
 
     }
 }

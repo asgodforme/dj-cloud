@@ -7,27 +7,36 @@ public class Run3 {
         Phaser phaser = new Phaser(3);
         phaser.register();
         Thread a = new Thread(() -> {
-            System.out.println("aaaaa");
+            System.out.println(Thread.currentThread().getName() + "aaaaa");
+            System.out.println(Thread.currentThread().getName() + phaser.getPhase());
             phaser.arriveAndAwaitAdvance();
             System.out.println("bbbbb");
+            phaser.arriveAndAwaitAdvance();
+            System.out.println("ccccc");
         });
         Thread b = new Thread(() -> {
-            System.out.println("aaaaa");
+            System.out.println(Thread.currentThread().getName() + "aaaaa");
             phaser.arriveAndAwaitAdvance();
+            System.out.println(Thread.currentThread().getName() + phaser.getPhase());
             System.out.println("bbbbb");
+            phaser.arriveAndAwaitAdvance();
+            System.out.println("ccccc");
         });
         Thread c = new Thread(() -> {
-            System.out.println("aaaaa");
+            System.out.println(Thread.currentThread().getName() + "aaaaa");
+            System.out.println(Thread.currentThread().getName() + phaser.getPhase());
             phaser.arriveAndAwaitAdvance();
             System.out.println("bbbbb");
+            phaser.arriveAndAwaitAdvance();
+            System.out.println("ccccc");
         });
         a.start();
         b.start();
         c.start();
 
-        Thread.sleep(5000);
+//        Thread.sleep(5000);
 
-        phaser.arriveAndDeregister();
+//        phaser.arriveAndDeregister();
 
     }
 }

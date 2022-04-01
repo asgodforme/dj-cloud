@@ -20,10 +20,11 @@ public class PrintTools {
         try {
             System.out.println(Thread.currentThread().getName() + " A1 begin = " + System.currentTimeMillis());
             Thread.sleep(5000);
-//            phaser.arriveAndAwaitAdvance();
-            phaser.arriveAndDeregister();
+            phaser.arriveAndAwaitAdvance();
+//            phaser.arriveAndDeregister();
             System.out.println(Thread.currentThread().getName() + " A1 end = " + System.currentTimeMillis());
 
+            phaser.arriveAndAwaitAdvance();
 
 //            System.out.println(Thread.currentThread().getName() + " A2 begin = " + System.currentTimeMillis());
 //            Thread.sleep(5000);

@@ -26,18 +26,15 @@ public class HelloServer {
     public void start() throws IOException {
         server.start();
         System.out.println("server start on " + port);
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                System.err.println("*** shutting down gRPC server since JVM is shutting down");
-                try {
-                    HelloServer.this.stop();
-                } catch (InterruptedException e) {
-                    e.printStackTrace(System.err);
-                }
-                System.err.println("*** server shut down");
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.err.println("*** shutting down gRPC server since JVM is shutting down");
+            try {
+                HelloServer.this.stop();
+            } catch (InterruptedException e) {
+                e.printStackTrace(System.err);
             }
-        });
+            System.err.println("*** server shut down");
+        }));
     }
 
     private void stop() throws InterruptedException {
@@ -82,6 +79,7 @@ public class HelloServer {
                 final long startTime = System.currentTimeMillis();
                 @Override
                 public void onNext(Request request) {
+                    System.out.println("服务端收到消息：" + request.getMessage());
                     requests.add(request);
                 }
 
@@ -102,7 +100,6 @@ public class HelloServer {
         @Override
         public StreamObserver<Request> helloDoubleStream(StreamObserver<Response> responseObserver) {
             return new StreamObserver<Request>() {
-
                 int count = 0;
 
                 @Override

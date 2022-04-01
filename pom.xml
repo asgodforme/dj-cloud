@@ -24,6 +24,8 @@
         <module>dj-common</module>
         <module>dj-facility</module>
         <module>own-protocol</module>
+        <module>design-modern</module>
+        <module>redis-test</module>
     </modules>
 
     <properties>

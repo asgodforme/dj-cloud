@@ -7,7 +7,26 @@ option java_package = "com.dj.hello";
 
 option java_outer_classname = "HelloProto";
 option objc_class_prefix = "HEL";
+/**
+文章链接： https://www.jianshu.com/p/73c9ed3a4877
+TLV格式是我们比较熟悉的编码格式。
+TLV: tag-length-value. tag作为该字段的唯一标识，length代表value数据域的长度，最后的value代表数据本身。
+protobuf采用类似结构但是实际上又有较大的差别。
 
+protobuf编码：
+1.首先，每一个message进行编码，其结果由一个个字段组成，每个字段可以划分为Tag-[Length]-Value,这里[length]是可选的。
+含义是针对不同类型的数据编码结构可能变成Tag-Value形式。如果变成了这样子的格式，没有了Length我们该如何确定Value的边界呢？
+答案是：Varint编码。
+
+Tag由field_number和wire_type两个部分组成。
+field_number: message定义字段时指定的字段编号
+wire_type: Potorbuf编码类型，根据这个类型有不同的Value编码方案。
+3bit的wire_type最多可以表达8种编码类型。目前protobuf已经定义了6种。如下：
+0： Varint  int32, int64, uint32, uint64, bool, enum
+1: 64-bit  fixed64, sfixed64, double
+2: Length-delimited string, bytes, embedded message, packed repeated fields
+5: 32-bit fixed32, sfixed32, float
+ */
 message Request {
   string message = 1;
 }

@@ -26,9 +26,12 @@ public class Test1 {
             csrf.submit(callableList.get(i));
         }
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             System.out.println("等待打印第" + (i+1) + "个返回值");
             System.out.println(csrf.take().get());
         }
+
+        threadPoolExecutor.shutdownNow();
+
     }
 }

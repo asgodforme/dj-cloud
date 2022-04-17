@@ -1,0 +1,2 @@
+org.springframework.boot.SpringApplicationRunListener=\
+com.dj.cloud.gateway.test.MySpringApplicationRunListener

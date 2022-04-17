@@ -23,9 +23,8 @@ public class WebFluxConfig implements WebFluxConfigurer {
     @Autowired
     private TimeHandler timeHandler;
 
-//    @Bean
-//    public RouterFunction<ServerResponse> timeRouter() {
-//        return RouterFunctions.route(RequestPredicates.GET("/timesReactive"), timeHandler::sendTimePerSec);
-//
-//    }
+    @Bean
+    public RouterFunction<ServerResponse> timeRouter() {
+        return RouterFunctions.route(RequestPredicates.GET("/timesReactive"), timeHandler::sendTimePerSec);
+    }
 }

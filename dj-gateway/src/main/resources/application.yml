@@ -11,11 +11,13 @@ spring:
   application:
     name: dj-gateway
   cloud:
+    bootstrap:
+      enabled: false
     nacos:
 #      server-addr: localhost:8848
       server-addr: 120.78.15.216:8849
       discovery:
-        enabled: true # 不开启注册
+        enabled: false # 不开启注册
         cluster-name: SZ #配置集群名称，也就是机房位置
 #        namespace: 590ec80f-7690-4899-8954-83f6f97fd8d6 #命名空间：相同命名空间的服务才可以访问
         namespace: 23023ae3-5df4-4234-9c11-54510e1792bd #命名空间：相同命名空间的服务才可以访问
@@ -42,4 +44,9 @@ spring:
 #            - Path=/api/user/**
 #      default-filters:
 #        - AddRequestHeader=jiangjie, hahahahah2222
-debug: true
+debug: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

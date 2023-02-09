@@ -3,7 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dj.cloud.mybatis.mapper.BlogMapper">
-    <select id="selectBlog" resultType="com.dj.cloud.mybatis.entity.Blog">
+<!--    <cache/>-->
+    <cache-ref namespace="com.dj.cloud.mybatis.mapper.BlogMapper"/>
+    
+    <resultMap id="blogMap" type="com.dj.cloud.mybatis.entity.Blog" autoMapping="true">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <collection property="comments" column="id" select="selectComments"/>
+    </resultMap>
+
+    <resultMap id="commentMap" type="com.dj.cloud.mybatis.entity.Comments" autoMapping="true" >
+        <result column="blog_id" property="blogId"/>
+        <association property="blog" column="blog_id" select="selectBlog"/>
+    </resultMap>
+
+    <select id="selectBlog" resultMap="blogMap">
         select * from Blog where id = #{id}
+    </select>
+
+    <select id="selectComments" resultMap="commentMap">
+        select * from comments where blog_id = #{id}
     </select>
 </mapper>

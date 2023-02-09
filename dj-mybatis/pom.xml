@@ -50,6 +50,17 @@
             <version>4.2.1</version>
             <scope>compile</scope>
         </dependency>
+        <!--
+            java
+            yaml
+            spring命名空间
+            Spring Boot Starter
+        -->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-jdbc-core</artifactId>
+            <version>5.1.1</version>
+        </dependency>
     </dependencies>
 
 </project>

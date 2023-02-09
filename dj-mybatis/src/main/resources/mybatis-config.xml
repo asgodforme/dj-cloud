@@ -5,6 +5,10 @@
 <configuration>
     <properties resource="db.properties">
     </properties>
+<!--    <settings>-->
+<!--&lt;!&ndash;        <setting name="localCacheScope" value="STATEMENT"/>&ndash;&gt;-->
+<!--        <setting name="cacheEnabled" value="true"/>-->
+<!--    </settings>-->
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -16,6 +20,7 @@
             </dataSource>
         </environment>
     </environments>
+    <!--spring 整合mybatis-->
     <mappers>
         <mapper resource="mapper/BlogMapper.xml"/>
     </mappers>

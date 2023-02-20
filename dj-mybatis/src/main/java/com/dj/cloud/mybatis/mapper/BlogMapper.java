@@ -28,4 +28,6 @@ public interface BlogMapper {
 //    @Update("update blog set comment= #{param2} where id = #{param1}")
     @Update("select * from blog ")
     int setComment(Integer id, String name);
+
+    Blog selectBlogById(Integer id);
 }

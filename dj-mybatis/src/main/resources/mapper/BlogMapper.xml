@@ -9,7 +9,7 @@
     <resultMap id="blogMap" type="com.dj.cloud.mybatis.entity.Blog" autoMapping="true">
         <id column="id" property="id"/>
         <result column="title" property="title"/>
-        <collection property="comments" column="id" select="selectComments"/>
+        <collection property="comments" column="id" select="selectComments" fetchType="lazy"/>
     </resultMap>
 
     <resultMap id="commentMap" type="com.dj.cloud.mybatis.entity.Comments" autoMapping="true" >
@@ -23,5 +23,28 @@
 
     <select id="selectComments" resultMap="commentMap">
         select * from comments where blog_id = #{id}
+    </select>
+    
+    <resultMap id="blog1Map" type="com.dj.cloud.mybatis.entity.Blog" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="comments" ofType="com.dj.cloud.mybatis.entity.Comments" autoMapping="true" columnPrefix="comment_">
+            <association property="blog" javaType="com.dj.cloud.mybatis.entity.Blog" resultMap="blog1Map"/>
+        </collection>
+    </resultMap>
+    
+    <select id="selectBlogById" resultMap="blog1Map">
+        select
+            a.id, a.title, a.comment,
+            c.id as comment_id,
+            c.blog_id as comment_blogId,
+            c.comment as comment_comment
+        from
+            blog a
+        left join
+            comments c
+        on
+            a.id = c.blog_id
+        where
+            a.id = #{id}
     </select>
 </mapper>

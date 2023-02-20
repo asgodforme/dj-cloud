@@ -5,10 +5,11 @@
 <configuration>
     <properties resource="db.properties">
     </properties>
-<!--    <settings>-->
-<!--&lt;!&ndash;        <setting name="localCacheScope" value="STATEMENT"/>&ndash;&gt;-->
+    <settings>
+<!--        <setting name="localCacheScope" value="STATEMENT"/>-->
 <!--        <setting name="cacheEnabled" value="true"/>-->
-<!--    </settings>-->
+        <setting name="configurationFactory" value="com.dj.cloud.mybatis.SecondCacheTest$ConfigurationFactory"/>
+    </settings>
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>

@@ -65,5 +65,4 @@ public class FirstCacheTest {
         Blog blog1 = blogMapper.selectBlog(1);
         System.out.println(blog == blog1);
     }
-
 }

@@ -15,13 +15,14 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SecondCacheTest {
     private SqlSessionFactory factory;
     private SqlSession sqlSession;
-    private Configuration configuration;
+    private static Configuration configuration;
 
     @Before
     public void init() throws IOException {
@@ -78,6 +79,79 @@ public class SecondCacheTest {
         BlogMapper mapper1 = sqlSession1.getMapper(BlogMapper.class);
         Comments comments = mapper1.selectComments(1);
         System.out.println(comments);
+    }
+
+    /**
+     * 懒加载
+     */
+    @Test
+    public void lazyTest() {
+        SqlSession sqlSession1 = factory.openSession();
+        BlogMapper mapper1 = sqlSession1.getMapper(BlogMapper.class);
+        Blog blog1 = mapper1.selectBlog(1);
+        blog1.getComments();
+    }
+
+    /**
+     * 关闭会话之后懒加载
+     */
+    @Test
+    public void stopSessionLazyTest() {
+        SqlSession sqlSession1 = factory.openSession();
+        BlogMapper mapper1 = sqlSession1.getMapper(BlogMapper.class);
+        Blog blog1 = mapper1.selectBlog(1);
+        sqlSession1.close();
+        blog1.getComments();
+    }
+
+    /**
+     * 调用set后懒加载会移除
+     */
+    @Test
+    public void lazySetTest() {
+        SqlSession sqlSession1 = factory.openSession();
+        BlogMapper mapper1 = sqlSession1.getMapper(BlogMapper.class);
+        Blog blog1 = mapper1.selectBlog(1);
+        blog1.setComments(new ArrayList<>());
+        System.out.println(blog1.getComments());
+    }
+
+    @Test
+    public void lazySerializableTest() throws IOException, ClassNotFoundException {
+        SqlSession sqlSession1 = factory.openSession();
+        BlogMapper mapper1 = sqlSession1.getMapper(BlogMapper.class);
+        Blog blog1 = mapper1.selectBlog(1);
+        byte[] bytes = writeObject(blog1);
+        Blog blog2 = (Blog) readObject(bytes);
+        System.out.println("反序列化完成");
+        System.out.println(blog2.getComments());
+    }
+
+    public static class ConfigurationFactory {
+        public static Configuration getConfiguration() {
+            return configuration;
+        }
+    }
+
+    private static byte[] writeObject(Object obj) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(obj);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private static Object readObject(byte[] bytes) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream byteArrayOutputStream = new ByteArrayInputStream(bytes);
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayOutputStream);
+        return objectInputStream.readObject();
+    }
+
+    @Test
+    public void nestQueryTest() {
+        SqlSession sqlSession1 = factory.openSession();
+        BlogMapper mapper1 = sqlSession1.getMapper(BlogMapper.class);
+        Blog blog1 = mapper1.selectBlogById(1);
+        System.out.println(blog1);
     }
 
 

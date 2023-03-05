@@ -29,6 +29,7 @@
         <module>dj-rocketmq</module>
         <module>dj-logging</module>
         <module>dj-algorithm</module>
+        <module>dj-netty</module>
     </modules>
 
     <properties>

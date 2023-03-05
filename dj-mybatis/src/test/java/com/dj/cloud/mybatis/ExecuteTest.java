@@ -117,7 +117,7 @@ public class ExecuteTest {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
             BlogMapper mapper = session.getMapper(BlogMapper.class);
             Blog blog = mapper.selectBlog(1);
-            System.out.println(blog);
+//            System.out.println(blog);
 //            List<Object> list = session.selectList("com.dj.cloud.mybatis.mapper.BlogMapper.selectBlog", 1);
 //            System.out.println(list);
         }

@@ -47,4 +47,34 @@
         where
             a.id = #{id}
     </select>
+
+    <select id="findBlog" resultType="com.dj.cloud.mybatis.entity.Blog" flushCache="true">
+        select * from blog
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="title != null">
+                <bind name="like_name" value="'%' + name '%'"/>
+                and name like #{like_name}
+            </if>
+            <if test="comment != null">
+                and comment = #{comment}
+            </if>
+        </where>
+    </select>
+    
+    <select id="findByIds" resultType="com.dj.cloud.mybatis.entity.Blog" flushCache="true">
+        select * from blog
+        where id in 
+        <foreach collection="list" separator="," item="item" index="index" open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+<!--    <select id="findBlogsAndComments" resultSets="com.dj.cloud.mybatis.entity.Blog, com.dj.cloud.mybatis.entity.Comments">-->
+<!--        {-->
+<!--            call test_proc_multi_result_set-->
+<!--        }-->
+<!--    </select>-->
 </mapper>

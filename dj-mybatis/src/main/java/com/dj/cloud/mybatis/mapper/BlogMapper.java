@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 @CacheNamespace
 public interface BlogMapper {
 
@@ -30,4 +32,6 @@ public interface BlogMapper {
     int setComment(Integer id, String name);
 
     Blog selectBlogById(Integer id);
+
+    Blog findBlog(Blog blog);
 }

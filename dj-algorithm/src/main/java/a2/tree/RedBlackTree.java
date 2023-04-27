@@ -6,7 +6,34 @@ package a2.tree;
  * @param <Key>
  * @param <Value>
  */
-public class RedBlackTree<Key, Value> {
+public class RedBlackTree<Key extends Comparable<Key>, Value> {
+
+    private Node root; // 根节点
+    private int n; // 树中元素的个数
+    private static final boolean RED = true;
+    private static final boolean BLACK = false;
+
+    /**
+     * 判断当前节点的父指向链接是否为红色
+     * @param x
+     * @return
+     */
+    private boolean isRed(Node x) {
+        if (x == null) {
+            return false;
+        }
+        return x.color == RED;
+    }
+
+    private Node rotateLeft(Node h) {
+        Node hRight = h.rigth;
+        Node lhRight = hRight.left;
+        h.rigth = lhRight;
+        hRight.left = h;
+        hRight.color = h.color;
+        h.color = RED;
+        return hRight;
+    }
 
     private class Node<Key, Value> {
         public Key key;

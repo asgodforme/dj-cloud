@@ -33,6 +33,18 @@ public class SinglyLinkedList implements Iterable<Integer> {
         }
     }
 
+    public void loop3() {
+        recursion(head);
+    }
+
+    private void recursion(Node current) {
+        if (current == null) {
+            return;
+        }
+        System.out.println(current.value);
+        recursion(current.next);
+    }
+
     @Override
     public Iterator<Integer> iterator() {
         return new NodeIterator();
@@ -171,7 +183,8 @@ public class SinglyLinkedList implements Iterable<Integer> {
         singlyLinkedList.addLast(4);
         singlyLinkedList.addLast(5);
 
-        System.out.println(singlyLinkedList.get(0));
-        System.out.println(singlyLinkedList.get(10));
+//        System.out.println(singlyLinkedList.get(0));
+//        System.out.println(singlyLinkedList.get(10));
+        singlyLinkedList.loop3();
     }
 }

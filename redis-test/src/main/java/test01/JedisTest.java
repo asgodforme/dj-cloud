@@ -1,6 +1,5 @@
 package test01;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -49,10 +48,10 @@ public class JedisTest {
         String lock = "string:lock" + lockName;
         while (true) {
             String result = jedis.get(lock);
-            if (StringUtils.isNotEmpty(result)) {
+            /*if (StringUtils.isNotEmpty(result)) {
                 jedis.del(lockName);
                 return;
-            }
+            }*/
         }
     }
 }
